@@ -19,56 +19,63 @@ public class AlgoCycle {
     public List<Integer> probaCycle(int c){
         System.out.println("nombre de demande : " + c);
         List<Integer> soluce = new ArrayList();
-        List<Integer> soluceTmp = new ArrayList();
-        soluce = chercherCycle();
+        List<Integer> soluceTmp;
+        List<List<Integer>> copyG = new ArrayList(G);
+        soluce = chercherCycle(copyG);
         System.out.println("soluce : " + affiche(soluce) + "\n");
         for(int i = 0; i < c-1; i++){
-            soluceTmp = chercherCycle();
+            copyG = new ArrayList<>(G);
+            soluceTmp = chercherCycle(copyG);
             System.out.println(affiche(soluceTmp));
             System.out.println("changement ? " + soluce.size() + " ## " + soluceTmp.size());
-            if(soluceTmp.size() > soluce.size())
+            if(soluceTmp.size() > soluce.size()){
                 System.out.println("changement");
                 soluce = soluceTmp;
+            }
         }
+        System.out.println("Soluce => " + affiche(soluce));
         return soluce;
     }
 
 
-    public List<Integer> chercherCycle(){
-
+    public List<Integer> chercherCycle(List<List<Integer>> copyG){
         List<Integer> cycle = new ArrayList();
         List<Integer> ListeVoisinSuivant;
         boolean boucle = false;
         int premierSeedIndex, seedIndex, voisinSuivant;
-        premierSeedIndex = alea(G.size());
+        premierSeedIndex = alea(copyG.size());
 
         //Ajout du premier sommet du cycle
         cycle.add(premierSeedIndex);
-        System.out.println("Début de recherche cycle : " + affiche(cycle));
+        //System.out.println("Début de recherche cycle : " + affiche(cycle));
         seedIndex = premierSeedIndex;
 
         do{
             //Récupération des voisins du dernier seed
-            ListeVoisinSuivant = G.get(seedIndex);
-            System.out.println("\tdo -> " +affiche(ListeVoisinSuivant) + "seed : " + seedIndex);
+            ListeVoisinSuivant = copyG.get(seedIndex);
+            //System.out.println("\tdo -> " +affiche(ListeVoisinSuivant) + "seed : " + seedIndex);
             //test si il reste des voisins
             if(ListeVoisinSuivant.isEmpty()){
-                System.out.println("\tnull");
+                //System.out.println("\tnull");
                 return null;
             } else {
                 boucle = true;
                 do {
+                    //sortie de ligne si il ne reste plus qu'un choix possible et qu'il fait déjà partie de cycle
+                    if(ListeVoisinSuivant.size()==2 && cycle.contains(ListeVoisinSuivant.get(1))){
+                        //System.out.println("vide, on enlève le début => " + ListeVoisinSuivant.get(1));
+                        cycle.add(cycle.size(), ListeVoisinSuivant.get(1));
+                        return elagCycle(cycle);
+                    }
+                    //traitement normal
                     //nouvel aléa sur ces voisins
                     seedIndex = alea(ListeVoisinSuivant.size() - 1) + 1;
-                    System.out.println("\t-> seed : " + seedIndex);
+                    //System.out.println("\t-> seed : " + seedIndex);
                     //récupération du nouveau sommet
                     voisinSuivant = ListeVoisinSuivant.get(seedIndex);
-                    System.out.println("\t-> " + voisinSuivant);
+                    //System.out.println("\t-> " + voisinSuivant);
                     //test si le sommet appartient déjà au cycle
-                    if(ListeVoisinSuivant.isEmpty()){
-                        System.out.println("vide, on enlève le début");
-                        return elagCycle(cycle);
-                    } else if (cycle.contains(voisinSuivant)) {
+                    if (cycle.contains(voisinSuivant)) {
                         if (cycle.get(0) == voisinSuivant) {
                             System.out.println("cycle");
                             return cycle;
@@ -82,7 +89,7 @@ public class AlgoCycle {
                 }while(boucle);
             }
             seedIndex = voisinSuivant;
-            System.out.println("\t\t->-> " + affiche(cycle) + "new turn");
+            //System.out.println("\t\t->-> " + affiche(cycle) + "new turn");
         }while(cycle.contains(voisinSuivant));
         System.out.println("sortie ?");
         return cycle;
@@ -90,17 +97,17 @@ public class AlgoCycle {
 
     public List<Integer> elagCycle(List<Integer> cycle){
         int fin = cycle.get(cycle.size()-1);
-        System.out.println("\t\tfin : " + fin + " - " + affiche(cycle));
-        while(cycle.get(0)!=fin){
+        //System.out.println("\t\tfin : " + fin + " - " + affiche(cycle));
+        while(cycle.get(0)!=fin && cycle.size()>0){
             cycle.remove(0);
         }
         cycle.remove(0);
-        System.out.println("\t\tnew cycle -> " + affiche(cycle));
+        System.out.println("elag cycle -> " + affiche(cycle));
         return cycle;
     }
 
     public String affiche(List<Integer> cycle){
-        String s = "Nouveau cycle :\n\t\t[";
+        String s = "";
         if(cycle != null) {
             Iterator<Integer> it = cycle.iterator();
             while (it.hasNext()) {
