@@ -9,9 +9,11 @@ import java.util.List;
  */
 public class ListeDouble {
     List<List<Integer>> listeD;
+    List<List<Integer>> Gr;
 
     public ListeDouble(){
         listeD = new ArrayList();
+        Gr = new ArrayList();
     }
 
     public void addFirst(int index){
@@ -59,7 +61,6 @@ public class ListeDouble {
     }
 
     public void initGraphResiduel(int size){
-        List<List> Gr = new ArrayList();
         for(int i=0;i<size;i++){
             List L=new ArrayList<>();
             L.add(i);
@@ -67,7 +68,7 @@ public class ListeDouble {
         }
     }
 
-    public void premierGrapfResiduel(List<Integer> L , List<List> Gr){
+    public void premierGrapfResiduel(List<Integer> L){
 
         for(int i=0; i<L.size();i++){
             if(i==0) {

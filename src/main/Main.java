@@ -17,7 +17,7 @@ public class Main {
 
         List listTemp = new ArrayList();
 
-        //0
+        /*//0
         listTemp.add(0);
         listTemp.add(1);
         listTemp.add(2);
@@ -82,11 +82,82 @@ public class Main {
         listTemp.add(8);
         listTemp.add(5);
         listTemp.add(6);
+        listeAdjacence.addListe(listTemp);*/
+
+        //0
+        listTemp.add(0);
+        listTemp.add(1);
+        listTemp.add(2);
+        listTemp.add(3);
+        listTemp.add(4);
         listeAdjacence.addListe(listTemp);
+
+        //1
+        listTemp = new ArrayList();
+        listTemp.add(1);
+        listTemp.add(0);
+        listTemp.add(2);
+        listTemp.add(5);
+        listTemp.add(6);
+        listeAdjacence.addListe(listTemp);
+
+        //2
+        listTemp = new ArrayList();
+        listTemp.add(2);
+        listTemp.add(0);
+        listTemp.add(1);
+        listTemp.add(3);
+        listTemp.add(6);
+        listeAdjacence.addListe(listTemp);
+
+        //3
+        listTemp = new ArrayList();
+        listTemp.add(3);
+        listTemp.add(0);
+        listTemp.add(2);
+        listTemp.add(4);
+        listTemp.add(7);
+        listeAdjacence.addListe(listTemp);
+
+        //4
+        listTemp = new ArrayList();
+        listTemp.add(4);
+        listTemp.add(0);
+        listTemp.add(3);
+        listTemp.add(5);
+        listTemp.add(7);
+        listeAdjacence.addListe(listTemp);
+
+        //5
+        listTemp = new ArrayList();
+        listTemp.add(5);
+        listTemp.add(1);
+        listTemp.add(4);
+        listTemp.add(6);
+        listTemp.add(7);
+        listeAdjacence.addListe(listTemp);
+
+        //6
+        listTemp = new ArrayList();
+        listTemp.add(6);
+        listTemp.add(1);
+        listTemp.add(2);
+        listTemp.add(5);
+        listTemp.add(7);
+        listeAdjacence.addListe(listTemp);
+
+        //7
+        listTemp = new ArrayList();
+        listTemp.add(7);
+        listTemp.add(3);
+        listTemp.add(4);
+        listTemp.add(5);
+        listTemp.add(6);
+        listeAdjacence.addListe(listTemp);
+
 
         System.out.println(listeAdjacence.toString());
         AlgoCycle algo = new AlgoCycle(listeAdjacence.getListeD());
-        algo.probaCycle(1000
-        );
+        algo.probaCycle(1000);
     }
 }
