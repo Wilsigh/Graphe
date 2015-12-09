@@ -58,6 +58,45 @@ public class ListeDouble {
         return -1;
     }
 
+    public void initGraphResiduel(int size){
+        List<List> Gr = new ArrayList();
+        for(int i=0;i<size;i++){
+            List L=new ArrayList<>();
+            L.add(i);
+            Gr.add(L);
+        }
+    }
+
+    public void premierGrapfResiduel(List<Integer> L , List<List> Gr){
+
+        for(int i=0; i<L.size();i++){
+            if(i==0) {
+                if (!Gr.get(L.get(i)).contains(L.get(i + 1))) {
+                    Gr.get(L.get(i)).add(L.get(i + 1));
+                }
+                if (!Gr.get(L.get(i)).contains(L.get(L.size() - 1))) {
+                    Gr.get(L.get(i)).add(L.get(L.size() - 1));
+                }
+            }
+            else if(i==L.size()-1){
+                if (!Gr.get(L.get(i)).contains(L.get(0))) {
+                    Gr.get(L.get(i)).add(L.get(0));
+                }
+                if (!Gr.get(L.get(i)).contains(L.get(i - 1))) {
+                    Gr.get(L.get(i)).add(L.get(i - 1));
+                }
+            }
+            else {
+                if (!Gr.get(L.get(i)).contains(L.get(i + 1))) {
+                    Gr.get(L.get(i)).add(L.get(i + 1));
+                }
+                if (!Gr.get(L.get(i)).contains(L.get(i - 1))) {
+                    Gr.get(L.get(i)).add(L.get(i - 1));
+                }
+            }
+        }
+    }
+
     public String toString(){
         if(listeD.isEmpty()){
             return "vide";
