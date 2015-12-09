@@ -76,7 +76,7 @@ public class AlgoCycle {
                     //System.out.println("\t-> " + voisinSuivant);
                     //test si le sommet appartient déjà au cycle
                     if (cycle.contains(voisinSuivant)) {
-                        if (cycle.get(0) == voisinSuivant) {
+                        if (cycle.get(0) == voisinSuivant && cycle.size()>2) {
                             System.out.println("cycle");
                             return cycle;
                         } else {
@@ -97,7 +97,7 @@ public class AlgoCycle {
 
     public List<Integer> elagCycle(List<Integer> cycle){
         int fin = cycle.get(cycle.size()-1);
-        //System.out.println("\t\tfin : " + fin + " - " + affiche(cycle));
+        System.out.println("\t\tfin : " + fin + " - " + affiche(cycle));
         while(cycle.get(0)!=fin && cycle.size()>0){
             cycle.remove(0);
         }

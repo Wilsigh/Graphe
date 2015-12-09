@@ -86,6 +86,7 @@ public class Main {
 
         System.out.println(listeAdjacence.toString());
         AlgoCycle algo = new AlgoCycle(listeAdjacence.getListeD());
-        algo.probaCycle(1000);
+        algo.probaCycle(1000
+        );
     }
 }
