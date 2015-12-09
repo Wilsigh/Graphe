@@ -98,6 +98,18 @@ public class ListeDouble {
         }
     }
 
+    public void premieresFace(List<Integer> cycle){
+        List<List<Integer>> faces= new ArrayList<>();
+        List<Integer> f1=new ArrayList<>();
+        List<Integer> f2=new ArrayList<>();
+        for(int i=0; i<cycle.size();i++){
+            f1.add(cycle.get(i));
+            f2.add(cycle.get(i));
+        }
+        faces.add(f1);
+        faces.add(f2);
+    }
+
     public String toString(){
         if(listeD.isEmpty()){
             return "vide";
