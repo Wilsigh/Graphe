@@ -62,7 +62,10 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
         }
         return -1;
     }
-
+    /*
+    * Cette fonction nous permet d'initilaiser le graph résiduel tel que:
+    * Gr=[[0],[1],...,[n]]
+    */
     public void initGraphResiduel(int size){
         ListeDouble Gr=new ListeDouble();
         for(int i=0;i<size;i++){
@@ -72,6 +75,11 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
         }
     }
 
+    /*
+    * Cette fonction nous permet de mettre de coté les sommet isolé (seulement un voisin)
+    * En effet, nous n'avons pas besoin de les traiter car ne pose aucun problème pour la planarité du graphe
+    * Mais nous devons les garder de coté pour la fin du programme
+    */
     public void misDeCote(ListeDouble G){
         List<List<Integer>> misDeCote=new ArrayList<>();
         for (int i = 0; i<G.size();i++){
@@ -86,9 +94,11 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
         }
     }
 
+    /*
+    * Graph Résiduel obtenue à l'aide de notre tout premier cycle
+    */
     public void premierGrapfResiduel(List<Integer> L,int size){
-
-        core.ListeDouble Gr=new ListeDouble();
+        ListeDouble Gr=new ListeDouble();
         Gr.initGraphResiduel(size);
         for(int i=0; i<L.size();i++){
             if(i==0) {
@@ -118,6 +128,9 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
         }
     }
 
+    /*
+    * Cela nous permet d'obtenir nos deux première face (identique)
+    */
     public void premieresFace(List<Integer> cycle){
         List<List<Integer>> faces= new ArrayList<>();
         List<Integer> f1=new ArrayList<>();
@@ -130,6 +143,9 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
         faces.add(f2);
     }
 
+    /*
+    * Nous permet d'obtenir la liste d'adjacence des composantes connexe
+    */
     public void composanteConnexes(List<List<Integer>> G,List<List<Integer>> Gr){
         ListeDouble compoCo = new ListeDouble();
         compoCo.initGraphResiduel(G.size());
@@ -142,6 +158,9 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
         }
     }
 
+    /*
+    * Rempli une liste nous permettant de savoir quel sont les sommet marqué
+    */
     public void sommetMarque(List<Integer> sommetMarques,List<Integer> sommet){
         for(int i=0;i<sommet.size();i++){
             if(!sommetMarques.contains(sommet.get(i))){
@@ -150,6 +169,9 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
         }
     }
 
+    /*
+    * Met à jour notre composante connexe à l'aide d'un fragment que l'on a déterminer dans une autre fonction
+    */
     public void modifCompoCo(List<Integer> L,ListeDouble compoCo){
         for(int i = 0 ; i< L.size();i++){
             if(i==0){
@@ -165,6 +187,9 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
         }
     }
 
+    /*
+    * Sert à mettre à jour les marque sur les sommets
+    */
     public void modifMarque(List<Integer> sommetMarques, List<Integer> L){
         for(int i=1; i<L.size()-2;i++){
              if(!sommetMarques.contains(L.get(i))){
@@ -173,13 +198,12 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
         }
     }
     //septique
+    /*
+    * Nous permet d'obtenir un fragment que l'on ppourra ajouter à Gr
+    */
     public List trouverVoisin(ListeDouble compoCo, List<Integer> marque, List<Integer> L){
         List<Integer> tmp = compoCo.get(L.get(L.size()-1));
         int z=0;
-//        do {
-//            int y = new Random().nextInt(compoCo.get((L.size() - 1)).size() - 1);
-//            z = compoCo.get((L.size() - 1)).get(y) + 1;
-//        }while(z==L.get(L.size()));
         for(int i=1; i<tmp.size();i++) {
             if (tmp.get(i) != (L.get(L.size() - 1))) {
                 if (marque.contains(z)) {
@@ -194,6 +218,10 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
         }
         return L;
     }
+
+    /*
+    * Nous permet de trouver un fragment et maj les marque ainsi que la composante connexe
+    */
     public void trouverFrag(ListeDouble compoCo,List<Integer> sommetMarques){
         for(int i=0; i<sommetMarques.size();i++){
             if(compoCo.get(i).size()>1){
@@ -206,6 +234,100 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
                 modifMarque(sommetMarques, tmp);
             }
         }
+    }
+
+    /*
+    * modifie les faces
+    */
+    //Seulement le cas pour deux face traité, il faut finaliser la chose.
+    public void modifFace(List<List<Integer>> face,List<Integer> frag){
+        List<Integer> tmp=new ArrayList<>();
+        if(face.size()==2){
+            tmp=face.get(1);
+            for(int i=0; i<tmp.size();i++){
+                List fa=suppEntre(face.get(i),frag);
+                List fb =suppAvAr(face.get(i), frag);
+            }
+        }
+    }
+
+    /*
+    * Détermination de la face en remplacant les élément compris par les deux sommet marqué par notre fagment
+    */
+    public List suppEntre(List<Integer> face, List<Integer> frag){
+        List<Integer> L=new ArrayList<>();
+        boolean b=false;
+        int cpt =0;
+        for(int i=0; i<frag.size();i++){
+            if (face.get(i)==frag.get(0)) {
+                if(cpt==1){
+                    b=false;
+                }
+                if(cpt==0){
+                    b=true;
+                    for(int j=0;j<frag.size();j++){
+                        L.add(frag.get(j));
+                    }
+                    cpt++;
+                }
+            }else if (face.get(i)==frag.get(frag.size()-1)){
+                if(cpt==1){
+                    b=false;
+                }
+                if(cpt==0){
+                    b=true;
+                    //  L.add(face.get(i));
+                    for(int j=frag.size();j>0;j--){
+                        L.add(frag.get(j));
+                    }
+                    cpt++;
+                }
+
+            }else if (!b){
+                L.add(face.get(i));
+            }
+        }
+        return L;
+    }
+
+    /*
+    * De même mais en touchant à ce avant et après les sommets marqué
+    */
+    //à vérifier
+    public List suppAvAr(List<Integer> face,List<Integer> frag){
+        List<Integer> L=new ArrayList<>();
+        boolean b=false;
+        int cpt =0;
+        for(int i=0; i<frag.size();i++){
+            if (face.get(i)==frag.get(0)) {
+                if(cpt==1){
+                    b=false;
+                    for(int j=0;j<frag.size();j++){
+                        L.add(frag.get(j));
+                    }
+                }
+                if(cpt==0){
+                    b=true;
+                    cpt++;
+                }
+            }else if (face.get(i)==frag.get(frag.size()-1)){
+                if(cpt==1){
+                    b=false;
+                    for(int j=frag.size();j>0;j--){
+                        L.add(frag.get(j));
+                    }
+
+                }
+                if(cpt==0){
+                    b=true;
+                    cpt++;
+                }
+
+            }else if (b){
+                L.add(face.get(i));
+            }
+        }
+        return L;
     }
 
     public String toString(){
