@@ -7,13 +7,13 @@ import java.util.List;
 /**
  * Created by Wilsigh on 09/12/2015.
  */
-public class ListeDouble {
+public class ListeDouble extends ArrayList<ArrayList<Integer>> {
     List<List<Integer>> listeD;
-    List<List<Integer>> Gr;
+    //List<List<Integer>> Gr;
 
     public ListeDouble(){
         listeD = new ArrayList();
-        Gr = new ArrayList();
+   //     Gr = new ArrayList();
     }
 
     public void addFirst(int index){
@@ -61,15 +61,17 @@ public class ListeDouble {
     }
 
     public void initGraphResiduel(int size){
+        ListeDouble Gr=new ListeDouble();
         for(int i=0;i<size;i++){
-            List L=new ArrayList<>();
+            List<Integer> L=new ArrayList<Integer>();
             L.add(i);
-            Gr.add(L);
+            Gr.add((ArrayList<Integer>) L);
         }
     }
 
-    public void premierGrapfResiduel(List<Integer> L){
-
+    public void premierGrapfResiduel(List<Integer> L,int size){
+        core.ListeDouble Gr=new ListeDouble();
+        Gr.initGraphResiduel(size);
         for(int i=0; i<L.size();i++){
             if(i==0) {
                 if (!Gr.get(L.get(i)).contains(L.get(i + 1))) {
@@ -108,6 +110,18 @@ public class ListeDouble {
         }
         faces.add(f1);
         faces.add(f2);
+    }
+
+    public void composanteConnexes(List<List<Integer>> G,List<List<Integer>> Gr){
+        core.ListeDouble compoCo = new ListeDouble();
+        compoCo.initGraphResiduel(G.size());
+        for(int i=0;i<G.size();i++){
+            for(int j=0; j<G.get(i).size();j++){
+                if(!Gr.get(i).contains(G.get(i).get(j))){
+                    compoCo.get(i).add(G.get(i).get(j));
+                }
+            }
+        }
     }
 
     public String toString(){
