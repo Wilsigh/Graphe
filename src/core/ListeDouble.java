@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
+import java.lang.Math;
 /**
  * Created by Wilsigh on 09/12/2015.
  */
@@ -63,7 +63,7 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
         return -1;
     }
     /*
-    * Cette fonction nous permet d'initilaiser le graph résiduel tel que:
+    * Cette fonction nous permet d'initilaiser le graph rï¿½siduel tel que:
     * Gr=[[0],[1],...,[n]]
     */
     public void initGraphResiduel(int size){
@@ -76,9 +76,9 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
     }
 
     /*
-    * Cette fonction nous permet de mettre de coté les sommet isolé (seulement un voisin)
-    * En effet, nous n'avons pas besoin de les traiter car ne pose aucun problème pour la planarité du graphe
-    * Mais nous devons les garder de coté pour la fin du programme
+    * Cette fonction nous permet de mettre de cotï¿½ les sommet isolï¿½ (seulement un voisin)
+    * En effet, nous n'avons pas besoin de les traiter car ne pose aucun problï¿½me pour la planaritï¿½ du graphe
+    * Mais nous devons les garder de cotï¿½ pour la fin du programme
     */
     public void misDeCote(ListeDouble G){
         List<List<Integer>> misDeCote=new ArrayList<>();
@@ -95,7 +95,7 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
     }
 
     /*
-    * Graph Résiduel obtenue à l'aide de notre tout premier cycle
+    * Graph Rï¿½siduel obtenue ï¿½ l'aide de notre tout premier cycle
     */
     public void premierGrapfResiduel(List<Integer> L,int size){
         ListeDouble Gr=new ListeDouble();
@@ -129,7 +129,7 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
     }
 
     /*
-    * Cela nous permet d'obtenir nos deux première face (identique)
+    * Cela nous permet d'obtenir nos deux premiï¿½re face (identique)
     */
     public void premieresFace(List<Integer> cycle){
         List<List<Integer>> faces= new ArrayList<>();
@@ -159,7 +159,7 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
     }
 
     /*
-    * Rempli une liste nous permettant de savoir quel sont les sommet marqué
+    * Rempli une liste nous permettant de savoir quel sont les sommet marquï¿½
     */
     public void sommetMarque(List<Integer> sommetMarques,List<Integer> sommet){
         for(int i=0;i<sommet.size();i++){
@@ -170,7 +170,7 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
     }
 
     /*
-    * Met à jour notre composante connexe à l'aide d'un fragment que l'on a déterminer dans une autre fonction
+    * Met ï¿½ jour notre composante connexe ï¿½ l'aide d'un fragment que l'on a dï¿½terminer dans une autre fonction
     */
     public void modifCompoCo(List<Integer> L,ListeDouble compoCo){
         for(int i = 0 ; i< L.size();i++){
@@ -188,7 +188,7 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
     }
 
     /*
-    * Sert à mettre à jour les marque sur les sommets
+    * Sert ï¿½ mettre ï¿½ jour les marque sur les sommets
     */
     public void modifMarque(List<Integer> sommetMarques, List<Integer> L){
         for(int i=1; i<L.size()-2;i++){
@@ -199,7 +199,7 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
     }
     //septique
     /*
-    * Nous permet d'obtenir un fragment que l'on ppourra ajouter à Gr
+    * Nous permet d'obtenir un fragment que l'on ppourra ajouter ï¿½ Gr
     */
     public List trouverVoisin(ListeDouble compoCo, List<Integer> marque, List<Integer> L){
         List<Integer> tmp = compoCo.get(L.get(L.size()-1));
@@ -239,7 +239,7 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
     /*
     * modifie les faces
     */
-    //Seulement le cas pour deux face traité, il faut finaliser la chose.
+    //Seulement le cas pour deux face traitï¿½, il faut finaliser la chose.
     public void modifFace(List<List<Integer>> face,List<Integer> frag){
         List<Integer> tmp=new ArrayList<>();
         if(face.size()==2){
@@ -248,11 +248,11 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
                 List fa=suppEntre(face.get(i),frag);
                 List fb =suppAvAr(face.get(i), frag);
             }
-        }
+        }else choixFace(face,frag);
     }
 
     /*
-    * Détermination de la face en remplacant les élément compris par les deux sommet marqué par notre fagment
+    * Dï¿½termination de la face en remplacant les ï¿½lï¿½ment compris par les deux sommet marquï¿½ par notre fagment
     */
     public List suppEntre(List<Integer> face, List<Integer> frag){
         List<Integer> L=new ArrayList<>();
@@ -291,9 +291,9 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
     }
 
     /*
-    * De même mais en touchant à ce avant et après les sommets marqué
+    * De mï¿½me mais en touchant ï¿½ ce avant et aprï¿½s les sommets marquï¿½
     */
-    //à vérifier
+    //ï¿½ vï¿½rifier
     public List suppAvAr(List<Integer> face,List<Integer> frag){
         List<Integer> L=new ArrayList<>();
         boolean b=false;
@@ -330,6 +330,25 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
         return L;
     }
 
+    public int choixFace(List<List<Integer>> face, List<Integer> frag){
+
+        int maxCpt = 0;
+        int save=0;
+
+        for(int i=0; i<frag.size();i++){
+            int cpt = 0;
+            for(int j=0; j<frag.size();j++){
+                if(face.get(i).contains(frag.get(j))){
+                    cpt++;
+                }
+            }
+            if(cpt>maxCpt){
+                save=i;
+            }
+        }
+        return save;
+    }
+
     public String toString(){
         if(listeD.isEmpty()){
             return "vide";
@@ -347,6 +366,7 @@ public class ListeDouble extends ArrayList<ArrayList<Integer>> {
             return s;
         }
     }
+
 
     public List<List<Integer>> getListeD() {
         return listeD;
